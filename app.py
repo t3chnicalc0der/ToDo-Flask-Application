@@ -20,25 +20,25 @@ def index():
     uncompleted = total_todo - completed_todo
     return render_template('dashboard/index.html', **locals())
 
-@app.route('/add', methods=['POST'])
-def add():
+@app.route('/add_tasks', methods=['POST'])
+def add_tasks():
     title = request.form.get('title')
     new_todo = Todo(title=title, complete=False)
-    db.session.add(new_todo)
+    db.session.add_tasks(new_todo)
     db.session.commit() 
     return redirect(url_for('index'))
 
-@app.route('/update/<int:id>')
-def update(id):
+@app.route('/update_tasks/<int:id>')
+def update_tasks(id):
     todo = Todo.query.filter_by(id=id).first()
     todo.complete = not todo.complete
     db.session.commit()
     return redirect(url_for('index'))
 
-@app.route('/delete/<int:id>')
-def delete(id):
+@app.route('/delete_tasks/<int:id>')
+def delete_tasks(id):
     todo = Todo.query.filter_by(id=id).first()
-    db.session.delete(todo)
+    db.session.delete_tasks(todo)
     db.session.commit()
     return redirect(url_for('index'))
 
